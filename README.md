@@ -66,7 +66,7 @@ Here's how.
 
 What we can do with a wire connected at both ends is to apply a <strong>voltage</strong> to it. For instance, keyboard can apply a voltage of 5V and the computer sees this. Electronic circuitry in the computer decides what this voltage actually means. Circuitry will tell the computer that it is seeing a 1 if the voltage is above a threshold and 0 if the applied voltage is below another threshold.
 
-![Voltage Thresholds](exports/voltage_thresholds.png "Voltage Thresholds")
+![Voltage Thresholds](https://github.com/engina/the-internet-book/blob/master/exports/voltage_thresholds.png "Voltage Thresholds")
 
 Anything sounds familiar ? We've learnt that, according to the applied voltage, the computer thinks it received a <strong>1 or 0</strong>. All those Hollywood hacker movies will start to make sense in a moment.
 
@@ -106,7 +106,7 @@ Now, imagine we send two <strong>bits</strong> of information.
 
 Fine. But what if keyboard sends two consequent 5V volts to send 1 and 1.
 
-![Clocking](exports/clock.png "Clocking")
+![Clocking](https://github.com/engina/the-internet-book/blob/master/exports/clock.png "Clocking")
 
 Looks like with 2 <strong>bits</strong> we can send 4 different information. We can also map these information to a more meaningful value. Image a table like this:
 <table class="aligncenter" style="width: 300px;" border="1"><caption> </caption>
