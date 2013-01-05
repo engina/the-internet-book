@@ -40,7 +40,7 @@ I hope this is especially inspirational for young people. If the book grabs a fe
 
 Goals
 =====
-If any of the following goals are not met for any part of the book, it means I failed.
+If any of the following goals are not met for any part of the book, it means that the book has failed.
 
   - **Accuracy**: You think some part of this document is not accurate.
   - **Clarity**: Any part of this document is ambiguous to you.
@@ -58,15 +58,99 @@ Chapter 1 - Journey of letters from keyboard to the computer
 ============================================================
 Each time a user hits a key on her keyboard, an information is sent to the computer. But how does a keyboard communicate with the computer ?
 
-The answer is simple: over a wire, duh! Most of the keyboards we use are connected to the computer with wires -- including our laptops.
+The answer is simple: over a wire! Most of the keyboards we use today are connected to the computer with wires -- including our laptops.
 
-These are electronic devices and all wired communication between them are done electronically but how does it actually work ? How is information transferred from one end of the wire to the other end.
+These are electronic devices and all wired communication between them are done electronically. But how does it actually work ? How is information transferred from one end of the wire to the other end.
 
-Here's how.
+OK, let's start with an ancient analogy and slowly approach to how it is done today.
 
-What we can do with a wire connected at both ends is to apply a <strong>voltage</strong> to it. For instance, keyboard can apply a voltage of 5V and the computer sees this. Electronic circuitry in the computer decides what this voltage actually means. Circuitry will tell the computer that it is seeing a 1 if the voltage is above a threshold and 0 if the applied voltage is below another threshold.
+Smoke Signalling
+----------------
+Remember smoke signalling from the movies ? Smoke signalling is one of the oldest long distance communications originating from as early as 150 BC.
+
+People realized that they can actually see smoke from very long distances. So, they figured, if they can apply some sort of pattern to the smoke, the other party observing the smoke from far away can tell something from the pattern.
+
+This is what we call **encoding** information and **decoding** it.
+
+Imagine you block the smoke every once in a while and create a two big smoke chunks separated from each other. This surely is not a natural smoke pattern and other parties observing the smoke from hundreds of kilometers away can tell that there's something to it.
+
+So, if both party have agreed on a code. They can understand each other.
+
+Let's assume that, "WE ARE UNDER ATTACK" message is encoded as two big chunks of smoke.
+
+So, the sender can create two big chunk of smokes and since the receiver knows how to decode two big chunks of smoke, he can tell that the sender is saying "WE ARE UNDER ATTACK".
+
+**Lesson learnt: information encoding and decoding.**
+
+Electrical Telegraphs (Encoding and Syncronization)
+---------------------------------------------------
+Fast forwarding 2000 years from 150 BC, in 1836 humans invented electrical telegraph which is a modern version of smoke signalling and it is very much like how electronic devices communicate today.
+
+For those of you who does not remember what electrical telegraph is; it is basically two guys communicating with each other over a wire built between very long distances. It is the fastest way of communication of its day. Each party has one big button in front of him and when you click on the button the other party hears your click.
+
+So, people figured that, if they can encode some information with these clicks, like their ancestors did with the smoke, they can actually send meaningful messages with the telegraph.
+
+So, they've developed codes for it. You might have heard one of them before, the **morse code**.
+
+They've specified two types of clicks: **dot** (short) and **dash** (long) clicks which is basically a short beep and a long beep in the recievers end. They've used these two types of clicks to encode latin alphabet and even more.
+
+So each combination of **dots** and **dashes** meant something.
+
+They've encoded each letter to some combination of these clicks. For instance:
+
+    S is ... 
+    O is ---
+
+So, if you shortly click the button for three times, the receiver knows that you've sent **S**. If you click the button and hold it down a bit longer for three times, it means you've sent an **O**.
+
+So to send out the international famous signal of asking for help, SOS, you simple send ...---...
+       
+    SOS is ...---...
+
+Fantastic but there are a couple of problems to solve. Let me demonstrate you with an example, as per usual. The code for E is .
+
+    E is .
+
+Now, knowing that a dot means E, how do we interprete SOS signal correctly ?
+
+    ...---... could mean either EEEOEEE or SOS ?
+
+Which means
+
+    ... could either mean one S or three E letters.
+
+So fix this ambiguity there's set of rules you obey. After each letter you make a silent pause as long as a dot.
+
+    SOS ... --- ... (note the empty spaces between ... and ---)
+
+If we ever wanted to send EEEOEEE, we'd
+
+    EEEOEEE . . . --- . . .
+
+This is often called **synchronization**. Two parties synchronize, so that each of them knows when one of them is ended sending a unit of information. In this particular case, a moment of silent tells that we have completed sending a letter.
+
+This is pretty much all you need to know abour morse code for now.
+
+**Lesson learnt: Synchronization.**
+
+Now, let's proceed, we are very close to how today's electronic devices actually communicate.
+
+How does electronic devices communicate today ?
+-----------------------------------------------
+
+Pretty much like electric telegraphs, electronic devices also send a current over a wire to the other connected devices. This is the basis of most of the communication you're using it today such as LAN, keyboard, mouse, printer -- practically anything with a wire.
+
+We've learnt two concepts in communication so far, **encoding** and **synchronization**. Now, lets put them to use.
+
+**Encoding**
+
+What we can do with a wire connected at both ends is to apply a **voltage** to it. For instance, keyboard can apply a voltage of 5 V and the computer's hardware can sense this change. Now, the computer needs to interprete the voltage it's sensing. Electronic circuitry in the computer decides what this voltage actually means. Circuitry in today's computer categorizes the voltage they are sensing on a wire into two categories; **High** or **Low**. Circuitry will tell the computer that, the wire is **High** if the voltage is above a threshold and **Low** if the applied voltage is below another threshold. So, computer interpretes the applied voltage to itself as either **High** or **Low**. 
 
 ![Voltage Thresholds](https://github.com/engina/the-internet-book/raw/master/exports/voltage_thresholds.png "Voltage Thresholds")
+
+As you can see in the above figure, a circuitry designed with such specifications will interprete any voltage from 2 to 5 as **High** and any voltage from 0 to 0.8 as **Low**.
+
+An alternative and more common way to say **High** and **Low** is **1** and **0**. High is 1 and Low is 0.
 
 Anything sounds familiar ? We've learnt that, according to the applied voltage, the computer thinks it received a <strong>1 or 0</strong>. All those Hollywood hacker movies will start to make sense in a moment.
 
@@ -103,6 +187,7 @@ Now, imagine we send two <strong>bits</strong> of information.
 </tbody>
 </table>
 <p style="text-align: center;">Table 1-a</p>
+Looks like with 2 **bits**, we can send 4 different information. We can also map these information to a more meaningful value. Image a table like this:
 
 Fine. But what if keyboard sends two consequent 5V volts to send 1 and 1. How does computer tell when one bit of
 information ends and the next one begins ? That two consequent 5V signals could mean one 1, two 1s or many 1s.
@@ -111,7 +196,7 @@ To separate bits of information in continuous signal, we often use another wire 
 
 ![Clocking](https://github.com/engina/the-internet-book/raw/master/exports/clock.png "Clocking")
 
-Looks like with 2 <strong>bits</strong> we can send 4 different information. We can also map these information to a more meaningful value. Image a table like this:
+
 <table class="aligncenter" style="width: 300px;" border="1"><caption> </caption>
 <tbody>
 <tr>
