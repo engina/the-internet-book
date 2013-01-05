@@ -82,8 +82,8 @@ So, the sender can create two big chunk of smokes and since the receiver knows h
 
 **Lesson learnt: information encoding and decoding.**
 
-Electrical Telegraphs (Encoding and Syncronization)
----------------------------------------------------
+Electrical Telegraphs
+---------------------
 Fast forwarding 2000 years from 150 BC, in 1836 humans invented electrical telegraph which is a modern version of smoke signalling and it is very much like how electronic devices communicate today.
 
 For those of you who does not remember what electrical telegraph is; it is basically two guys communicating with each other over a wire built between very long distances. It is the fastest way of communication of its day. Each party has one big button in front of him and when you click on the button the other party hears your click.
@@ -135,16 +135,24 @@ This is pretty much all you need to know abour morse code for now.
 
 Now, let's proceed, we are very close to how today's electronic devices actually communicate.
 
-How does electronic devices communicate today ?
------------------------------------------------
+So, how does electronic devices communicate today ?
+---------------------------------------------------
 
-Pretty much like electric telegraphs, electronic devices also send a current over a wire to the other connected devices. This is the basis of most of the communication you're using it today such as LAN, keyboard, mouse, printer -- practically anything with a wire.
+Pretty much like electric telegraphs, electronic devices also send a current over a wire to the other connected devices. This is the basis of most of the communication you're using it today such as LAN, keyboard, mouse, printer -- practically anything with a wire. 
 
-We've learnt two concepts in communication so far, **encoding** and **synchronization**. Now, lets put them to use.
+We've learnt two concepts in communication so far, **encoding** and **synchronization**. Now, lets put them to use. 
+
+Here's how electronic devices communicate today.
 
 **Encoding**
 
-What we can do with a wire connected at both ends is to apply a **voltage** to it. For instance, keyboard can apply a voltage of 5 V and the computer's hardware can sense this change. Now, the computer needs to interprete the voltage it's sensing. Electronic circuitry in the computer decides what this voltage actually means. Circuitry in today's computer categorizes the voltage they are sensing on a wire into two categories; **High** or **Low**. Circuitry will tell the computer that, the wire is **High** if the voltage is above a threshold and **Low** if the applied voltage is below another threshold. So, computer interpretes the applied voltage to itself as either **High** or **Low**. 
+In smoke signalling, we were using continuity of the smoke to encode information. Like, if it is two separate chunks of smoke, it means "WE ARE UNDER ATTACK".
+
+In electrical telegraphs, we used short and long beeps to encode information. Like, letter S is encoded with three short beeps (...) and letter O is three long beeps (---).
+
+In modern electronic devices, we use voltage levels on the wire to encode information. For instance, if the keyboard is applying 5 volts to the wire, computer interpretes it as High and if the voltage is 0 volts the computer interpretes it as Low.
+
+Of course, in practice, the computer interpretes a voltage level as **High** if it is between a range and the same also applies for **Low**.
 
 ![Voltage Thresholds](https://github.com/engina/the-internet-book/raw/master/exports/voltage_thresholds.png "Voltage Thresholds")
 
@@ -152,11 +160,11 @@ As you can see in the above figure, a circuitry designed with such specification
 
 An alternative and more common way to say **High** and **Low** is **1** and **0**. High is 1 and Low is 0.
 
-Anything sounds familiar ? We've learnt that, according to the applied voltage, the computer thinks it received a <strong>1 or 0</strong>. All those Hollywood hacker movies will start to make sense in a moment.
+So we encode information into voltage levels. In this particular case, only information we can send is 1 or 0. In the morse code, it was a dot and a dash.
 
-So, keyboards (and electronic devices in general) can send either 1 or 0 at a given time. Unfortunately,  this <strong>bit</strong> of information is not enough to let computer know which key the user pressed. So, we must send more <strong>bits</strong> of information continuously to actually mean something. Please note that I'm using the term <strong>bit</strong>.
+So, keyboards (and electronic devices in general) can send either 1 or 0 at a given time. Unfortunately,  this **bit** of information is not enough to let computer know which key the user pressed. So, we must send more **bits** of information continuously to actually mean something. Please note that I'm using the term **bit**.
 
-Now, imagine we send two <strong>bits</strong> of information.
+Now, imagine we send two **bits** of information.
 <table class="aligncenter" style="width: 300px;" border="1" align="center"><caption> </caption>
 <tbody>
 <tr>
@@ -187,58 +195,54 @@ Now, imagine we send two <strong>bits</strong> of information.
 </tbody>
 </table>
 <p style="text-align: center;">Table 1-a</p>
-Looks like with 2 **bits**, we can send 4 different information. We can also map these information to a more meaningful value. Image a table like this:
+Looks like with 2 **bits**, we can send 4 different information. We can also map these information to a more meaningful value. Imagine a table like this:
 
-Fine. But what if keyboard sends two consequent 5V volts to send 1 and 1. How does computer tell when one bit of
-information ends and the next one begins ? That two consequent 5V signals could mean one 1, two 1s or many 1s.
-
-To separate bits of information in continuous signal, we often use another wire which we call clock.
-
-![Clocking](https://github.com/engina/the-internet-book/raw/master/exports/clock.png "Clocking")
-
-
-<table class="aligncenter" style="width: 300px;" border="1"><caption> </caption>
+<table align="center" style="width: 300px;" border="1"><caption> </caption>
 <tbody>
 <tr>
+<td style="text-align: center;"><strong>First bit</strong></td>
+<td style="text-align: center;"><strong>Second bit</strong></td>
 <td style="text-align: center;"><strong>Information</strong></td>
 <td style="text-align: center;"><strong>Value</strong></td>
 </tr>
 <tr>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
 <td style="width: 150px; text-align: center;">0</td>
 <td style="text-align: center;">H</td>
 </tr>
 <tr>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
 <td style="text-align: center;">1</td>
 <td style="text-align: center;">E</td>
 </tr>
 <tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
 <td style="text-align: center;">2</td>
 <td style="text-align: center;">L</td>
 </tr>
 <tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
 <td style="text-align: center;">3</td>
 <td style="text-align: center;">O</td>
 </tr>
 </tbody>
 </table>
 <p style="text-align: center;">Table 1-b</p>
-Sweet. So if keyboard sends, 2 bits of information to computer. It can send an information from 0 to 3 which computer can look it up from a table to see what it actually means.
+Sweet. So if keyboard sends, 2 bits of information to computer. It can send an information from 0 to 3 which computer can look it up from a table to see what it actually means. This is pretty much like morse code sending a combination of dots and dashes to encode a letter, here we send 1 and 0 to encode the letter information.
 
-Imagine keyboard applied voltage to its wire two times. First it set the voltage to 5 volts which means 1 and then sets the voltage to 0 volts which means 0. So the keyboard practically sent 1 and 0 to the computer which is equal to information 2 as you can see in Table 1-a. Then the computer can look what is information means up from Table 1-b and see that it means L.
+So, if the keyboard wants to send a few letters to the computer, it needs to send numerous ones and zeros continiuously. Imagine keyboard applied voltage to its wire two times. First it set the voltage to 5 volts which means 1 and then sets the voltage to 0 volts which means 0. So the keyboard practically sent 1 and 0 to the computer which is equal to information 2 as you can see in Table 1-a. Then the computer can look what that information means up from Table 1-b and see that it means **L**.
 
-Now, image the keyboard applies these voltages to the wire.
+But, we have a similar synchronization problem as we had in morse code. When the keyboard is sending two zeros or ones consequently, how can the computer tell when one ends the other one begins ? In the electrci telhgraph, we solved the issue by adding silences between each letter. That solution works well for humans but in this particular case it is machines talking to each other so we can use a much more efficient way to do that: **Clock signal.**
 
-0V 0V    0V 5V    5V 0V    5V 0V    5V 5V
+![Clocking](https://github.com/engina/the-internet-book/raw/master/exports/clock.png "Clocking")
 
-Computer would interpret these voltage like this, as we already learnt.
+We send the data over one wire and we send clock signal from another wire so that the computer knows when to check the data wire.
 
-0   0       0   1      1   0       1   0      1   1
-
-Nice. Then computer can look each pair of bits up in the Table 1-b. And the result will be the following
-
-H            E           L            L           O
-
-Oh my goodness! The keyboard just sent a meaningful message to the computer. <strong>HELLO</strong>
+You'll find in the above figure that computer will interpret the data wire only when the clock wire has pulses.
 
 We can formalize the number of information we can encode as <strong>2<sup>n</sup></strong>. <strong>2</strong> is the number of states each bit can represent, in our case it is two because it can be either 1 or 0 and <strong>n</strong> is the number of bits.
 
@@ -249,3 +253,10 @@ You might be wondering, instead of sending just 1 and 0, why don't we send 2, 3,
 We got the basics of how electronic devices are communicating but there's more. The exact way how the data is sent depends on the underlying technology.
 
 Nowadays the dominant way of connecting a keyboard to a computer is USB, before that PS/2 connectors were used. Still to this day, PS/2 is used. Most of the laptop keyboards are internally connected via PS/2 connectors. Both of these technologies use serial communication
+Fine. But what if keyboard sends two consequent 5V volts to send 1 and 1. How does computer tell when one bit of
+information ends and the next one begins ? That two consequent 5V signals could mean one 1, two 1s or many 1s.
+
+To separate bits of information in continuous signal, we often use another wire which we call clock.
+
+![Clocking](https://github.com/engina/the-internet-book/raw/master/exports/clock.png "Clocking")
+
