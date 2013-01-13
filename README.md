@@ -48,11 +48,24 @@ If any of the following goals are not met for any part of the book, it means tha
 
 Contents
 ======
+Overview
+
 Chapter 1 - Journey of letters from keyboard to the computer
 
 Chapter 2 - What does computer do with all these letters ?
 
 Chapter 3 - So, browsers know what you want, now what ?
+
+Overview
+========
+![Overview](https://github.com/engina/the-internet-book/raw/master/exports/overview.png "Voltage Overview")
+
+This book aims to explain all nitty gritty details of a web page retrieval in correct order. For instance, it will start teaching how the keys you press on your keyboard travel all the way up to your computer.
+
+Unfortunetely however, there's no single path while retrieving a page.
+
+For instance, we can plug our keyboard with PS/2 (laptops and old PCs), USB or bluetooth. Even though the big picture remains the same, hardware interfaces differ in each scenario. We can make a sacrifice and go with the simplest hardware interface, or explain each of them in detail. To explain all of them, support from community is required, as it is a broad topic.
+
 
 Chapter 1 - Journey of letters from keyboard to the computer
 ============================================================
@@ -138,11 +151,16 @@ Now, let's proceed, we are very close to how today's electronic devices actually
 So, how does electronic devices communicate today ?
 ---------------------------------------------------
 
+PS/2
+----
+
 Pretty much like electric telegraphs, electronic devices also send a current over a wire to the other connected devices. This is the basis of most of the communication you're using it today such as LAN, keyboard, mouse, printer -- practically anything with a wire. 
 
 We've learnt two concepts in communication so far, **encoding** and **synchronization**. Now, lets put them to use. 
 
-Here's how electronic devices communicate today.
+Here's how a PS/2 keyboard communicates today. PS/2 connection is an old technology but it is still used in laptop keyboards so it is pretty relevant.
+
+PS/2 concepts explained here also applies to other electronic communication busses, such as SPI (Serial Peripheral Interface) which is used in many integrated circuits. For instance, it is quite common for two chips to talk to each other over SPI.
 
 **Encoding**
 
@@ -236,27 +254,34 @@ Sweet. So if keyboard sends, 2 bits of information to computer. It can send an i
 
 So, if the keyboard wants to send a few letters to the computer, it needs to send numerous ones and zeros continiuously. Imagine keyboard applied voltage to its wire two times. First it set the voltage to 5 volts which means 1 and then sets the voltage to 0 volts which means 0. So the keyboard practically sent 1 and 0 to the computer which is equal to information 2 as you can see in Table 1-a. Then the computer can look what that information means up from Table 1-b and see that it means **L**.
 
-But, we have a similar synchronization problem as we had in morse code. When the keyboard is sending two zeros or ones consequently, how can the computer tell when one ends the other one begins ? In the electrci telhgraph, we solved the issue by adding silences between each letter. That solution works well for humans but in this particular case it is machines talking to each other so we can use a much more efficient way to do that: **Clock signal.**
+But, we have a similar synchronization problem as we had in morse code. When the keyboard is sending two zeros or ones consequently, how can the computer tell when one ends the other one begins ? In the electric telegraph, we solved the issue by adding silences between each letter. That solution works well for humans but in this particular case it is machines talking to each other so we can use a much more efficient way to do that: **Clock signal.**
 
 ![Clocking](https://github.com/engina/the-internet-book/raw/master/exports/clock.png "Clocking")
 
 We send the data over one wire and we send clock signal from another wire so that the computer knows when to check the data wire.
 
-You'll find in the above figure that computer will interpret the data wire only when the clock wire has pulses.
+You'll find in the above figure that computer will interpret the data wire only when the signal on the clock wire rises. It is called rise and fall when signal goes from low to high and high to low respectively.
 
-We can formalize the number of information we can encode as <strong>2<sup>n</sup></strong>. <strong>2</strong> is the number of states each bit can represent, in our case it is two because it can be either 1 or 0 and <strong>n</strong> is the number of bits.
+Note that this is electronic devices talking to each other. None of the parties is human. Everything is automated. So, it is done in a quite fast manner. For PS/2, about 10000-16000 bits are transferred per second. That is, 10-16 kHz.
 
-So, if we send 8 bits, it can represent 256 (2<sup>8</sup>) different information, that is values from 0 to 255. Note: In computer world everything starts from index 0.
+You might think that it is pretty fast now imagine there are stuff in your computer doing this kind of stuff at the rates of millions (MHz) or even billions (GHz) of times per second.
 
-You might be wondering, instead of sending just 1 and 0, why don't we send 2, 3, 4 too ? So that we could have sent more information with each bit. To do that, circuits must interpret different voltage levels as different numbers. Well, rest assured, I've heard that it has been tried but 1, 0 design won over time. [find references]
+OK, all the problems are solved. Now, we know how keyboards encode and synchronize data with the computer now. Now let's approach a bit more to the reality.
 
-We got the basics of how electronic devices are communicating but there's more. The exact way how the data is sent depends on the underlying technology.
+**Encoding a Bit More**
 
-Nowadays the dominant way of connecting a keyboard to a computer is USB, before that PS/2 connectors were used. Still to this day, PS/2 is used. Most of the laptop keyboards are internally connected via PS/2 connectors. Both of these technologies use serial communication
-Fine. But what if keyboard sends two consequent 5V volts to send 1 and 1. How does computer tell when one bit of
-information ends and the next one begins ? That two consequent 5V signals could mean one 1, two 1s or many 1s.
+So, we've learn how to send 4 letters with 2 bits but in practice we need much more. We need to send letters, numbers, enter and space keys, modifier keys such as Ctrl, Shift, Alt and more!
 
-To separate bits of information in continuous signal, we often use another wire which we call clock.
+We can formalize the number of information we can encode as **2<sup>n</sup>**. **2** is the number of states each bit can represent, in our case it is two because it can be either 1 or 0 and **n** is the number of bits.
 
-![Clocking](https://github.com/engina/the-internet-book/raw/master/exports/clock.png "Clocking")
+At this point, you might be wondering, instead of sending just 1 and 0, why don't we send 2, 3, 4 too ? So that we could have sent more information with each bit. To do that, circuits must interpret different voltage levels as different numbers. Well, rest assured, I've heard that it has been tried but 1, 0 design won over time. [find references]
 
+Anyway, back to reailty. So, if we send 8 bits, it can represent 256 (2<sup>8</sup>) different information, that is values from 0 to 255. Note: In computer world everything starts from index 0.
+
+USB
+----
+???
+
+Bluetooth
+---------
+???
