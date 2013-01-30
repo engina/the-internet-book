@@ -285,3 +285,100 @@ USB
 Bluetooth
 ---------
 ???
+
+
+Chapter 2 - What does computer do with all these letters ?
+==========================================================
+[Shall we describe how OS passes these letters to the user space program]
+???
+
+Chapter 3 - So, browsers know what you want, now what ? [ IN PROGRESS]
+=======================================================
+Fantastic. The browser finally knows that we want to visit **facebook.com**. Now what ?
+
+Our browser will send a request to the server who is hosting **facebook.com**. Brace yourselves, at this very second, we are entering the world of networking.
+
+When it comes to networking things are quite analogous to telephones. If you need to get an **information** from **Jane**, you have to look up her **phone number** from a **phone book**, call her and ask what you gotta ask and hopefully get a **response**.
+
+In this particular case, the information we need is a **web page** from **facebook.com**. To request the web page from facebook.com, we need to know facebook's **IP address** -- instead of a phone number. IP is an acronym for Internet Protocol, so what we are looking for here is the Internet Protocol Address of facebook.
+
+You might ask, why ? Why do we need an IP address, we already know the domain name, facebook.com. Remember the telephone analogy. It's prerty much the same with the internet too. Internet is designed from ground up to be based on IP addresses just like our telecommunication is based on phone numbers. When you are calling your friend with your phone, you pick her name and phone looks it up from its phone book and calls the number. And in networking, your computer looks up the IP address from DNS servers.
+
+DNS
+---
+So, to look facebook.com's IP Address up, we use Domain Name Servers (DNS). These are phone books of the internet. This book tells us IP addresses of the domains we are trying to connect to.
+
+DHCP
+----
+Whenever our computers are connected to the internet, they are automatically configured by our routers at home via Dynamic Host Configuraiton Protocol (DHCP).
+
+This happens transparently to the end user whenever she is connected to a network, either via plugging in an Ethernet cable or joining to a Wireless network.
+
+DHCP tells our computer what is its IP address, netmask, what DNS servers it can use and what is the default Gateway of this network. All of them will make sense in a moment.
+
+At this point, let's assume a sample configuration for ourselves.
+
+<table class="aligncenter" style="width: 300px;" border="1" align="center"><caption> </caption>
+<tbody>
+<tr>
+<td>IP Address</td>
+<td style="text-align: center;">192.168.1.100</td>
+</tr>
+<tr>
+<td>Netmask</td>
+<td style="text-align: center;">255.255.255.0</td>
+</tr>
+<tr>
+<td>Gateway</td>
+<td style="text-align: center;">192.168.1.1</td>
+</tr>
+<tr>
+<td>DNS</td>
+<td style="text-align: center;">208.67.220.220</td>
+</tr>
+<tr>
+<td>DNS</td>
+<td style="text-align: center;">208.67.222.222</td>
+</tr>
+</tbody>
+</table>
+
+Often our computers are configured with at least two DNS servers because they are so critical to internet as we know it, there must be a back up.
+
+First thing's first. How's the information enveloped ?
+------------------------------------------------------
+
+
+physical layer -> link layer -> network layer -> transport layer -> 
+
+Packet delivery on internet is a bit couner-intuitive.
+
+Imagine there's an information you want to send to a friend.
+
+
+
+DNS Request
+-----------
+So, let's start with our very very first communication with the world -- the internet.
+
+Netmask
+-------
+DNS server is out of our network, gotta send to default gateway.
+Default Gateway
+---------------
+Default gateway will be found with ARP
+ARP
+---
+MAC resolution now put the DNS IP and send it to GW.
+Ethernet or Wifi frame ??? Where to explain this
+------------
+Where to explain this ? mmm
+DNS Response
+-------------
+Actual HTTP request
+--------------------
+Real request to the web server
+Packet is out in the wild
+-------------------------
+Hops
+----
