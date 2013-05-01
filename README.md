@@ -44,7 +44,7 @@ If any of the following goals are not met for any part of the book, it means tha
 
   - **Accuracy**: You think some part of this document is not accurate.
   - **Clarity**: Any part of this document is ambiguous to you.
-  - **Makes perfect sense**: If some information presented here does not make perfect sense to you. (Please see Contribute sections last bullet for more information).</li>
+  - **Makes perfect sense**: If some information presented here does not make perfect sense to you. (Please see Contribute section's last bullet for more information).</li>
 
 Contents
 ======
@@ -303,6 +303,86 @@ When it comes to networking things are quite analogous to telephones. If you nee
 In this particular case, the information we need is a **web page** from **facebook.com**. To request the web page from facebook.com, we need to know facebook's **IP address** -- instead of a phone number. IP is an acronym for Internet Protocol, so what we are looking for here is the Internet Protocol Address of facebook.
 
 You might ask, why ? Why do we need an IP address, we already know the domain name, facebook.com. Remember the telephone analogy. It's prerty much the same with the internet too. Internet is designed from ground up to be based on IP addresses just like our telecommunication is based on phone numbers. When you are calling your friend with your phone, you pick her name and phone looks it up from its phone book and calls the number. And in networking, your computer looks up the IP address from DNS servers.
+
+To resolve the hostname to an IP address we need to talk to the DNS server and before we go into that, we have to cover how this TALKING actually takes place.
+
+Communication of Networked Devices
+----------------------------------
+As computer scientists designed and developed networks, they have deducted some lessons from the experience and they designed the OSI model which is the foundation of our netorking system that we use today.
+
+Roughly speaking this model dictates that there are several layers in communication and each layer is transported by the layer below it.
+
+Imagine you have two documents that you want to send. One is to Jane and the other one is to John. Both **Jane** and **John** works at **Acme Corp**. Jane works at in the **Human Resources** department and John works in the **Sales Department**.
+
+The well organized person you are. You prepare a big envelop that is addressed to Acme Corp. Then you prepare two smaller envelopes addressed to Human Resources and Sales respectively. Then you write down who is the documents addressed to on top of each one of them.
+
+So you have one big envelop that has two smaller envelopes, each having one document in them.
+
+**Postman** delivers the envelop to Acme Corp., **Mail Staff** opens the envelope and sees that there are two other envelopes. They forward the smaller envelop to their respective departments.
+
+Each department's **secretary** opens the envelop and see who is the document inside is addressed to. She easily figures it out, as you wrote who are they addressed to on top of them!
+
+Voila! You have very well structured document delivery system which can even deliver a document to a person in a building full of thousands of employees.
+
+Here Postal Office ls Layer 1, Mail Staff of Acme Corp is Layer 2 and Secretaries are Layer 3. Mail Staff can only work when Post Office did its job correctly. Likewise Secretaries can't work if Mail Staff fails. Hence all layers depends on the one below them.
+
+You know what ? This is pretty similar to how networks really work today.
+
+* Layer 1 is the outer-most envelope which has the address of Acme Corp.
+* Layer 2 is an inner envelop which is addressed to Jane.
+* Layer 3 is another inner envelop which has a Sequence Number on it and asks for Acknowledgement.
+
+
+
+	    +---------------------------------------------+
+	    | Acme Corp.                                  |
+	    | +-----------------------------------------+ |
+	    | | To: Human Resources                     | |
+	    | | +-------------------------------------+ | |
+	    | | | To: Jane                            | | |
+	    | | |                                     | | |
+	    | | | Here goes the actual document data  | | |
+	    | | | …                                   | | |
+	    | | +-------------------------------------+ | |
+	    | +-----------------------------------------+ |
+	    +---------------------------------------------+
+    
+
+We can go one step further and roughly map this analogy to today's networking.
+
+- Layer 1 is Ethernet (Postmen)
+- Layer 2 is IP       (Acme Corp. Mail Staff)
+- Layer 3 is UDP      (Secretaries)
+ 
+Now, let's complicate the situation a bit more. Assume we keep having documents for Jane at Acme Corp. from time to time. And we want to send them to Jane but this time we want to make sure that the documents are actually received by Jane and the documents are delivered in correct order.
+
+To accomplish this, we need some sort of **Acknowledgment** and **Sequence Numbers** mechanisms. Let's add two more notes on top of the documents.
+
+	    +---------------------------------------------+
+	    | Acme Corp.                                  |
+	    | +-----------------------------------------+ |
+	    | | To: Human Resources                     | |
+	    | | +-------------------------------------+ | |
+	    | | | To: Jane                            | | |
+	    | | | Sequence Number: 5                  | | |
+	    | | | !Please send acknowlegement!        | | |
+	    | | |                                     | | |
+	    | | | Here goes the actual document data  | | |
+	    | | | …                                   | | |
+	    | | +-------------------------------------+ | |
+	    | +-----------------------------------------+ |
+	    +---------------------------------------------+
+
+Now, secretary has two more responsibilities. Putting the documents in the right order before delivering them to Jane and send back an acknowledgement to us so that we know the documents are delivered. This secretary is called TCP.
+	    
+TCP provides reliabiliy.
+
+So why on earth we'd use UDP for if TCP is doing a much better job anyway ?
+
+Sticking to our analogy TCP is more costly as there are Acknowledgments (in reality there are plenty of more costs).
+
+But cost itself is not the real reason why UDP is still used today. TCP's design inherently makes it a less responsive protocol. Imagine if there's one message that is not acknowledged, it will be re-send, and all pending messages will have to wait until the resend is successful. This introduces delays in the communication. For stuff like downloading big files or streaming movies this is not important, as we need every single piece of data in right order anyway. Buy for real-time First Person Shooter games a delay is intolerable. We rather lost one message and continue on processing other messages than to introduce a lag in a real time game. Hence UDP is the standard in gaming protocols.
+
 
 DNS
 ---
