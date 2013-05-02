@@ -314,7 +314,7 @@ Roughly speaking this model dictates that there are several layers in communicat
 
 Imagine you have two documents that you want to send. One is to Jane and the other one is to John. Both **Jane** and **John** works at **Acme Corp**. Jane works at in the **Human Resources** department and John works in the **Sales Department**.
 
-The well organized person you are. You prepare a big envelop that is addressed to Acme Corp. Then you prepare two smaller envelopes addressed to Human Resources and Sales respectively. Then you write down who is the documents addressed to on top of each one of them.
+The well organized person you are. You prepare a big envelop that is addressed to Acme Corp. Then you prepare two smaller envelopes addressed to Human Resources and Sales respectively. Then you write down who is the documents addressed to on top of each document.
 
 So you have one big envelop that has two smaller envelopes, each having one document in them.
 
@@ -330,9 +330,7 @@ You know what ? This is pretty similar to how networks really work today.
 
 * Layer 1 is the outer-most envelope which has the address of Acme Corp.
 * Layer 2 is an inner envelop which is addressed to Jane.
-* Layer 3 is another inner envelop which has a Sequence Number on it and asks for Acknowledgement.
-
-
+* Layer 3 is the document which has a Sequence Number on it and asks for Acknowledgement.
 
 	    +---------------------------------------------+
 	    | Acme Corp.                                  |
@@ -373,17 +371,128 @@ To accomplish this, we need some sort of **Acknowledgment** and **Sequence Numbe
 	    | +-----------------------------------------+ |
 	    +---------------------------------------------+
 
-Now, secretary has two more responsibilities. Putting the documents in the right order before delivering them to Jane and send back an acknowledgement to us so that we know the documents are delivered. This secretary is called TCP.
+Now, secretary has two more responsibilities. Putting the documents in the right order before delivering them to Jane and send an acknowledgement back to the sender, so that she know the documents are delivered. This secretary is called TCP.
 	    
 TCP provides reliabiliy.
 
 So why on earth we'd use UDP for if TCP is doing a much better job anyway ?
 
-Sticking to our analogy TCP is more costly as there are Acknowledgments (in reality there are plenty of more costs).
+Sticking to our analogy, TCP is more espensive as there are Acknowledgments.
 
-But cost itself is not the real reason why UDP is still used today. TCP's design inherently makes it a less responsive protocol. Imagine if there's one message that is not acknowledged, it will be re-send, and all pending messages will have to wait until the resend is successful. This introduces delays in the communication. For stuff like downloading big files or streaming movies this is not important, as we need every single piece of data in right order anyway. Buy for real-time First Person Shooter games a delay is intolerable. We rather lost one message and continue on processing other messages than to introduce a lag in a real time game. Hence UDP is the standard in gaming protocols.
+But cost itself is not the real reason why UDP is still used today. Imagine, we've sent 4 documents. Somehow 2nd document get lost in the mail. Secretary received 3 documents with sequence numbers 1, 3 and 4. Secretary has to wait for the 2nd document to arrive so that, she can sort the mails and deliver to Jane. We will send 2nd document again because we won't receive an Acknowledgement for it. As youcan see, in case of any packet loss, all subsequent packets are delayed.
 
+For stuff like downloading big files or streaming movies this is not important, as we need every single piece of data in the right order anyway. But for, say, real-time First Person Shooter games, a delay is intolerable. We rather lost one message and continue on processing other messages than to introduce a lag in a real time game. Hence UDP is almost a standard in gaming protocols.
 
+We modeled our analogy in 3 layers; outer envelope, inner envelope and the document. Let's see how exactly is the OSI model that we talked about in the beginning of the section. Also show the more modern TCP/IP Model which is a simplified view of OSI Model.
+
+[[SHOULD WE JUST OMIT OSI MODEL ALL TOGETHER?]]
+
+<table>
+	<tr>
+		<th>OSI Model</th>
+		<th>TCP/IP Model</th>
+		<th>Our analogy  model</th>
+		<th>Protocols</th>
+	</tr>
+	<tr>
+		<td>Layer 1 (Physical Layer)</td>
+		<td rowspan=2>Level 1 (Physical Layer)</td>
+		<td rowspan=2>Level 1 (Postman)</td>
+		<td rowspan=2>Ethernet</td>
+	</tr>
+	<tr>
+		<td>Layer 2 (Data Link Layer)</td>
+	</tr>
+	<tr>
+		<td>Layer 3 (Network Layer)</td>
+		<td>Level 2 (Network Layer)</td>
+		<td>Level 2 (Mail Staff)</td>
+		<td>IP</td>
+	</tr>
+	<tr>
+		<td>Layer 4 (Transport Layer)</td>
+		<td>Layer 3 (Transport Layer)</td>
+		<td>Layer 3 (Secretary)</td>
+		<td>IP, ARP</td>
+	</tr>
+	<tr>
+		<td>Layer 5 (Session Layer)</td>
+		<td rowspan=3>Layer 4 (Application Layer)</td>
+		<td rowspan=3>Even though we haven't named it our <br/>document's content can be considered as <br/>Layer 4 (Application Layer)</td>
+		<td rowspan=3>DHCP, DNS, HTTP</td>
+	</tr>
+	<tr>
+		<td>Layer 6 (Presentation Layer)</td>
+	</tr>
+	<tr>
+		<td>Layer 7 (Application Layer)</td>
+	</tr>
+</table>
+
+Please, note that, protocols given are only relevant examples that we will explain in further detail. There are many more protocols out there.
+
+Now, let's study these layers in computers.
+
+Physical Layer
+--------------
+The lowest level layer of our model. In our real world analogy it was the postman. In computing, it is your network interface. Most laptop have at least two network interfaces that we are interested: wired and wireless. One is where you plug-in your LAN cable (if you still have one) and the otherone one is the wireless. Nowadays, as laptops get smaller, support for LAN is being dropped, and it is completely justified.
+
+Luckily, regardless of which interface (wired or wireless), we use Ethernet frames. A frame is a fancy term for an envelope in networking jargon.
+
+We just prepare an Ethernet frame (envelope) and place it in the physical network hardware and the hardware does its magic to send it -- which we will be explaining.
+
+So let's start understanding our Layer 1. This is the basic structure of an Ethernet frame.
+
+	+---------+---------+---------+-----------------+----------+
+	| Mac Dst | Mac Src |   Type  |     Payload     | Checksum |
+	+---------+---------+---------+-----------------+----------+
+	| 6-bytes | 6-bytes | 2-bytes | up to 1500 bytes| 4-bytes  |
+	+---------+---------+---------+-----------------+----------+
+
+This is our outer most envelope, our Ethernet frame.
+
+* **Mac Dst** is the destination this frame is addressed to
+* **Mac Src** is the source, the sender of this frame
+* **Type** is the type of content this frame is carrying
+* **Payload** the actual content of this frame, it can be data, or another frame (an inner envelope)
+* **Checksum** is a magical mathematical number (read below)
+
+[[New Concept: CHECKSUMS]]
+
+Checksum is an error detection technique. It is computed from the data preceeding it. Both the sender and receiver computes it and compares if they match. If it does not match there was an error in communication.
+
+Let's see with an example.
+
+Imagine you are talking to Jane over the phone and you want to tell her that, this is the **bee** season and she should be careful because she has allergies but there's a problem in the phone line and the voice quality is even worse than a normal phone conversation.
+
+You want to make sure that she understands you correctly. Luckily Jane and you developed a technique to overcome this situation before. When you say a word, you will compute and say its checksum afterwards. Jane will compute the checksum of the word she heard. So she can compare the checksum you told her with the one she computed and see if there was an error.
+
+Now, let's remember what we've learnt in Chapter 1. Each letter can be represented by a number. Let's assume
+
+- B is 66
+- E is 69
+
+Let's define our checksum algorithm as the sum of the values of the letters present in the word.
+
+Computing the checksum the word "bee" with this algorithm, we will have a checksum of 204 (66 + 69 + 69).
+
+Now, after the word **BEE**, you will say **204** to Jane.
+
+Jane thought you said **PEE 204**. Jane starts calculates the checksum of the word **PEE**. From prior mutual agreement she also has a table that shows the values of each letter. She looks up and figures:
+
+- P is 80
+- E is 69
+
+She calculates the checksum of **PEE** as **218**. She notices that the checksum you said was **204** and not the same as the checksum she calculated. So she nows that there was a mishearing and now she doesn't think that you are stupid because you said "pee season".
+
+As you can see Jane detected the error. 
+
+However, keep in mind that in practice, checksum algorithms are much more complicated.
+
+[[END OF NEW CONCEPT]]
+
+Every physical network interface has its own MAC address.
+time at
 DNS
 ---
 So, to look facebook.com's IP Address up, we use Domain Name Servers (DNS). These are phone books of the internet. This book tells us IP addresses of the domains we are trying to connect to.
