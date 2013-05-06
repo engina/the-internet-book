@@ -132,7 +132,7 @@ Which means
 
     ... could either mean one S or three E letters.
 
-So fix this ambiguity there's set of rules you obey. After each letter you make a silent pause as long as a dot.
+To fix this ambiguity there's a set of rules you obey. After each letter, you make a silent pause as long as a dot.
 
     SOS ... --- ... (note the empty spaces between ... and ---)
 
@@ -164,23 +164,19 @@ PS/2 concepts explained here also applies to other electronic communication buss
 
 **Encoding**
 
-In smoke signalling, we were using continuity of the smoke to encode information. Like, if it is two separate chunks of smoke, it means "WE ARE UNDER ATTACK".
+In smoke signaling, we were using continuity of the smoke to encode information. Like, if it is two separate chunks of smoke, it means "WE ARE UNDER ATTACK".
 
 In electrical telegraphs, we used short and long beeps to encode information. Like, letter S is encoded with three short beeps (...) and letter O is three long beeps (---).
 
-In modern electronic devices, we use voltage levels on the wire to encode information. For instance, if the keyboard is applying 5 volts to the wire, computer interpretes it as High and if the voltage is 0 volts the computer interpretes it as Low.
+In modern electronic devices, we use voltage levels on the wire to encode information. For instance, if the keyboard is applying 5 volts to the wire, computer interprets it as High and if the voltage is 0 volts the computer interpretes it as Low.
 
-Of course, in practice, the computer interpretes a voltage level as **High** if it is between a range and the same also applies for **Low**.
-
-![Voltage Thresholds](https://github.com/engina/the-internet-book/raw/master/exports/voltage_thresholds.png "Voltage Thresholds")
-
-As you can see in the above figure, a circuitry designed with such specifications will interprete any voltage from 2 to 5 as **High** and any voltage from 0 to 0.8 as **Low**.
+Of course, in practice, the computer interprets a voltage level as **High** if it is between a range and the same also applies for **Low**. Say, it is considered High if the voltage level is between 3 and 5 Volts. And likewise, it is considered Low if the voltage level is between 0 and 1 Volts. But for simplicity's sake we can just assume High is 5 Volts and Low is 0 Volts.
 
 An alternative and more common way to say **High** and **Low** is **1** and **0**. High is 1 and Low is 0.
 
 So we encode information into voltage levels. In this particular case, only information we can send is 1 or 0. In the morse code, it was a dot and a dash.
 
-So, keyboards (and electronic devices in general) can send either 1 or 0 at a given time. Unfortunately,  this **bit** of information is not enough to let computer know which key the user pressed. So, we must send more **bits** of information continuously to actually mean something. Please note that I'm using the term **bit**.
+So, keyboards (and electronic devices in general) can either send 1 or 0 at any given time. Unfortunately,  this **bit** of information is not enough to let computer know which key the user pressed. So, we must send more **bits** of information continuously to actually mean something. Please note that I'm using the term **bit**.
 
 Now, imagine we send two **bits** of information.
 <table class="aligncenter" style="width: 300px;" border="1" align="center"><caption> </caption>
@@ -256,17 +252,17 @@ So, if the keyboard wants to send a few letters to the computer, it needs to sen
 
 But, we have a similar synchronization problem as we had in morse code. When the keyboard is sending two zeros or ones consequently, how can the computer tell when one ends the other one begins ? In the electric telegraph, we solved the issue by adding silences between each letter. That solution works well for humans but in this particular case it is machines talking to each other so we can use a much more efficient way to do that: **Clock signal.**
 
-![Clocking](https://github.com/engina/the-internet-book/raw/master/exports/clock.png "Clocking")
-
 We send the data over one wire and we send clock signal from another wire so that the computer knows when to check the data wire.
+
+![Clocking](https://github.com/engina/the-internet-book/raw/master/exports/clock.png "Clocking")
 
 You'll find in the above figure that computer will interpret the data wire only when the signal on the clock wire rises. It is called rise and fall when signal goes from low to high and high to low respectively.
 
 Note that this is electronic devices talking to each other. None of the parties is human. Everything is automated. So, it is done in a quite fast manner. For PS/2, about 10000-16000 bits are transferred per second. That is, 10-16 kHz.
 
-You might think that it is pretty fast now imagine there are stuff in your computer doing this kind of stuff at the rates of millions (MHz) or even billions (GHz) of times per second.
+You might think that it is pretty fast, now imagine there are stuff in your computer doing this kind of stuff at the rates of millions (MHz) or even billions (GHz) of times per second.
 
-OK, all the problems are solved. Now, we know how keyboards encode and synchronize data with the computer now. Now let's approach a bit more to the reality.
+OK, all the problems are solved. Now, we know how keyboards encode and synchronize data with the computer now. Now let's approach to the reality a bit more.
 
 **Encoding a Bit More**
 
@@ -276,7 +272,9 @@ We can formalize the number of information we can encode as **2<sup>n</sup>**.
 
 At this point, you might be wondering, instead of sending just 1 and 0, why don't we send 2, 3, 4 too ? So that we could have sent more information with each bit. To do that, circuits must interpret different voltage levels as different numbers. Well, rest assured, I've heard that it has been tried but 1, 0 design won over time. [find references]
 
-Anyway, back to reailty. So, if we send 8 bits, it can represent 256 (2<sup>8</sup>) different information, that is values from 0 to 255. Note: In computer world everything starts from index 0.
+Anyway, back to reality. So, if we send 8 bits, it can represent 256 (2<sup>8</sup>) different information, that is values from 0 to 255. Note: In computer world everything starts from index 0.
+
+So, we've learnt what a bit means and what all those mysterious ones and zeroes they use in Hollywood hacker movies really are! Not too bad for a first chapter, right ?
 
 USB
 ----
@@ -413,7 +411,7 @@ We modeled our analogy in 3 layers; outer envelope, inner envelope and the docum
 		<td>Layer 4 (Transport Layer)</td>
 		<td>Layer 3 (Transport Layer)</td>
 		<td>Layer 3 (Secretary)</td>
-		<td>IP, ARP</td>
+		<td>IP, ARP, ICMP</td>
 	</tr>
 	<tr>
 		<td>Layer 5 (Session Layer)</td>
@@ -435,9 +433,9 @@ Now, let's study these layers in computers.
 
 Physical Layer
 --------------
-The lowest level layer of our model. In our real world analogy it was the postman. In computing, it is your network interface. Most laptop have at least two network interfaces that we are interested: wired and wireless. One is where you plug-in your LAN cable (if you still have one) and the otherone one is the wireless. Nowadays, as laptops get smaller, support for LAN is being dropped, and it is completely justified.
+The lowest level layer of our model. In our real world analogy it was the postman. In computing, it is your network interface. Most laptop have at least two network interfaces that we are interested: wired and wireless. One is where you plug-in your LAN cable (if you still have one) and the other one is the wireless. Nowadays, as laptops get smaller, support for LAN is being dropped, and it is completely justified.
 
-Luckily, regardless of which interface (wired or wireless), we use Ethernet frames. A frame is a fancy term for an envelope in networking jargon.
+Luckily, regardless of which interface (wired or wireless), we use Ethernet frames. **A frame is a fancy term for an envelope in networking jargon.**
 
 We just prepare an Ethernet frame (envelope) and place it in the physical network hardware and the hardware does its magic to send it -- which we will be explaining.
 
@@ -449,50 +447,107 @@ So let's start understanding our Layer 1. This is the basic structure of an Ethe
 	| 6-bytes | 6-bytes | 2-bytes | up to 1500 bytes| 4-bytes  |
 	+---------+---------+---------+-----------------+----------+
 
+[[NEW TERM: Header]]
+In computing, we call the information preceeding the actual payload, a **header**.
+[[NEW TERM END: Header]]
+
 This is our outer most envelope, our Ethernet frame.
 
-* **Mac Dst** is the destination this frame is addressed to
-* **Mac Src** is the source, the sender of this frame
+* **Mac Dst** is the destination adress, this frame is addressed to
+* **Mac Src** is the source address, the sender of this frame
 * **Type** is the type of content this frame is carrying
 * **Payload** the actual content of this frame, it can be data, or another frame (an inner envelope)
 * **Checksum** is a magical mathematical number (read below)
 
 [[New Concept: CHECKSUMS]]
 
-Checksum is an error detection technique. It is computed from the data preceeding it. Both the sender and receiver computes it and compares if they match. If it does not match there was an error in communication.
+Checksum is an error detection technique. It is computed from the data preceeding it. Both the sender and receiver computes it and compares if they match or not. If it does not match there was an error in communication.
 
 Let's see with an example.
 
 Imagine you are talking to Jane over the phone and you want to tell her that, this is the **bee** season and she should be careful because she has allergies but there's a problem in the phone line and the voice quality is even worse than a normal phone conversation.
 
-You want to make sure that she understands you correctly. Luckily Jane and you developed a technique to overcome this situation before. When you say a word, you will compute and say its checksum afterwards. Jane will compute the checksum of the word she heard. So she can compare the checksum you told her with the one she computed and see if there was an error.
+You want to make sure that she understands you correctly. Luckily Jane and you developed a technique to overcome this situation before. When you say a word, you will compute and say its checksum afterwards. Jane will compute the checksum of the word she had just heard. So she can compare the checksum you told her with the one she computed and see if there was an error.
 
-Now, let's remember what we've learnt in Chapter 1. Each letter can be represented by a number. Let's assume
+Now, let's remember what we've learnt in Chapter 1. Each letter can (and will) be represented by a number. Let's assume
 
 - B is 66
 - E is 69
 
 Let's define our checksum algorithm as the sum of the values of the letters present in the word.
 
-Computing the checksum the word "bee" with this algorithm, we will have a checksum of 204 (66 + 69 + 69).
+Computing the checksum the word "BEE" with this algorithm, we will have a checksum of 204 (66 + 69 + 69).
 
 Now, after the word **BEE**, you will say **204** to Jane.
 
-Jane thought you said **PEE 204**. Jane starts calculates the checksum of the word **PEE**. From prior mutual agreement she also has a table that shows the values of each letter. She looks up and figures:
+Due to poor voice quality, Jane thought you said **PEE 204**. Jane starts calculating the checksum of the word **PEE**. From prior mutual agreement she also has a table that shows the values of each letter. She looks up and figures:
 
 - P is 80
 - E is 69
 
-She calculates the checksum of **PEE** as **218**. She notices that the checksum you said was **204** and not the same as the checksum she calculated. So she nows that there was a mishearing and now she doesn't think that you are stupid because you said "pee season".
+She calculates the checksum of **PEE** as **218**. She notices that the checksum you said was **204** and not the same as the checksum she calculated. So she knows that there was a mishearing and now she doesn't think that you are stupid because you said "pee season".
 
-As you can see Jane detected the error. 
+As you can see Jane has successfully detected the error. She will ask you to repeat that word and you will re-say the word until the checksums match.
 
 However, keep in mind that in practice, checksum algorithms are much more complicated.
 
 [[END OF NEW CONCEPT]]
 
-Every physical network interface has its own MAC address.
-time at
+Luckily every physical device comes with a unique MAC address preconfigured. So, we know what to write to *MAC src* field in the frame. Some hardware might not even allow you to write *MAC src* field manually and fills in the preconfigured MAC address there automatically -- hence stop you from forging fake addresses.
+
+Most hardwares also compute the checksum for you. So, you basically, just need to fill in *MAC dst*, *Type* and *Payload* fields.
+
+Network Layer
+--------------
+Let's remember that in our real world analogy, Network Layer was the Mail Staff of Acme Corp.. Postman delivers a big envelope which contains smaller envelopes to the Mail Staff.
+
+Postman is Physical Layer in this case and the big envelop is the Ethernet Frame. Smaller envelops are most often IP Frames. IP is the acronym of Internet Protocol and it pretty much envelops everything that is related to Internet as we know if.
+
+Note: Smaller envelop can also be an ARP (Address Resolution Protocol) or an ICMP (Internet Control Message Protocol) packet instead of an IP packet but we will explain later, just when we need them.
+
+Let's learn how does a IP Frame look like.
+
+[[NEW CONCEPT: WORD]]
+Word is a term for the natural unit of data for a particular processor design.
+
+For instance, for a 32-bit processor, word size would be 32-bits. When we use the term **word** for the processor what we actually mean is a group of bits of size 32.
+
+The reason we call it the *natural unit of data* is that, the processor has indeed specifically designed for that particular data size and it is most efficient when working on multiples of that data size.
+
+For now, just know that, a word is a fixed size group of bits.
+[[END NEW CONCEPT: WORD]]
+
+An IP Frame has at least a 20-bytes header. We usually say, it consist of at least 5 words. Word being 32-bits, hence each word is 4 bytes.
+
+Let's learn word by word, what each bits of IP Header mean.
+
+              +---------------------------------------+---------------------------------------+---------------------------------------+---------------------------------------+
+              |             8-bit                     |             8-bit                     |             8-bit                     |             8-bit                     |
+              +----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+
+              |  0 |  1 |  2 |  3 |  4 |  5 |  6 |  7 |  8 |  9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 
+  +-----------+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+
+  | 0-th word |      Version      |   Header length   |           DSCP         |      ECN     |                                 Total Length                                  |
+  +-----------+-------------------+-------------------+------------------------+--------------+--------------+----------------------------------------------------------------+
+  | 1-st word |                               Identification                                  |     Flags    |                        Fragment Offset                         |
+  +-----------+---------------------------------------+---------------------------------------+--------------+----------------------------------------------------------------+
+  | 2-nd word |             Time to Live              |               Protocol                |                                Header Checksum                                |
+  +-----------+---------------------------------------+---------------------------------------+-------------------------------------------------------------------------------+
+  | 3-rd word |                                                                       Source IP Address                                                                       |
+  +-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------+
+  | 4-th word |                                                                    Destionation IP Address                                                                    |
+  +-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------+
+  +-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------+
+  | 5-th word |                                                           Options (if Header Length is greater than 5)                                                        |
+  +-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------+
+  |    ...    |                                                           Options (if Header Length is greater than 5)                                                        |
+  +-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------+
+  | n-th word |                                                           Options (if Header Length is greater than 5)                                                        |
+  +-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+dscp: https://tools.ietf.org/html/rfc2474
+ecn : https://tools.ietf.org/html/rfc3168
+1-st word is all about fragmentation which does not occur in practice.
+
 DNS
 ---
 So, to look facebook.com's IP Address up, we use Domain Name Servers (DNS). These are phone books of the internet. This book tells us IP addresses of the domains we are trying to connect to.
